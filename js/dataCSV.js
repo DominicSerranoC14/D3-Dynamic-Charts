@@ -34,7 +34,6 @@ const buildLine = () => {
 
 // Build a table of the sales totals
 const showTotals = () => {
-
   const table = d3.select('body').append('table');
   let sales = [];
 
@@ -57,7 +56,6 @@ const showTotals = () => {
     .append('tr')
     .append('td')
     .text((d) => d);
-
 };
 
 

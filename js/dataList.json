@@ -1,0 +1,112 @@
+{
+  "collection": [
+
+    {
+      "category": "Produce",
+      "region": "West",
+      "monthlySales":
+      [{
+          "month": 1,
+          "sales":  120
+        },
+        {
+          "month": 2,
+          "sales":  130
+        },
+        {
+          "month": 3,
+          "sales":  140
+        },
+        {
+          "month": 4,
+          "sales":  150
+        },
+        {
+          "month": 5,
+          "sales":  120
+        },
+        {
+          "month": 6,
+          "sales":  130
+        },
+        {
+          "month": 7,
+          "sales":  160
+        },
+        {
+          "month": 8,
+          "sales":  230
+        },
+        {
+          "month": 9,
+          "sales":  210
+        },
+        {
+          "month": 10,
+          "sales":  110
+        },
+        {
+          "month": 11,
+          "sales":  140
+        },
+        {
+          "month": 12,
+          "sales":  160
+      }]
+    },
+    {
+      "category": "Deli",
+      "region": "West",
+      "monthlySales":
+      [{
+          "month": 1,
+          "sales":  120
+        },
+        {
+          "month": 2,
+          "sales":  130
+        },
+        {
+          "month": 3,
+          "sales":  140
+        },
+        {
+          "month": 4,
+          "sales":  150
+        },
+        {
+          "month": 5,
+          "sales":  120
+        },
+        {
+          "month": 6,
+          "sales":  130
+        },
+        {
+          "month": 7,
+          "sales":  160
+        },
+        {
+          "month": 8,
+          "sales":  230
+        },
+        {
+          "month": 9,
+          "sales":  210
+        },
+        {
+          "month": 10,
+          "sales":  110
+        },
+        {
+          "month": 11,
+          "sales":  140
+        },
+        {
+          "month": 12,
+          "sales":  160
+      }]
+    }
+    
+  ]
+}
