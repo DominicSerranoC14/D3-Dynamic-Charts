@@ -5,16 +5,16 @@ const w = 400;
 
 let dataList = [
   {'month': 1, "sales": 105},
-  {'month': 2, "sales": 110},
-  {'month': 3, "sales": 220},
+  {'month': 2, "sales": 130},
+  {'month': 3, "sales": 230},
   {'month': 4, "sales": 125},
-  {'month': 5, "sales": 130},
+  {'month': 5, "sales": 150},
   {'month': 6, "sales": 205},
-  {'month': 7, "sales": 210},
-  {'month': 8, "sales": 215},
+  {'month': 7, "sales": 220},
+  {'month': 8, "sales": 210},
   {'month': 9, "sales": 115},
   {'month': 10, "sales": 120},
-  {'month': 11, "sales": 225},
+  {'month': 11, "sales": 295},
   {'month': 12, "sales": 230},
 ];
 
