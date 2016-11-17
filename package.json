@@ -1,0 +1,23 @@
+{
+  "name": "charts",
+  "version": "1.0.0",
+  "description": "Dynamic charts using the D3 chart tutorials.",
+  "main": "charts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DominicSerranoC14/D3-Dynamic-Charts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DominicSerranoC14/D3-Dynamic-Charts/issues"
+  },
+  "homepage": "https://github.com/DominicSerranoC14/D3-Dynamic-Charts#readme",
+  "dependencies": {
+    "d3": "^4.3.0"
+  }
+}
