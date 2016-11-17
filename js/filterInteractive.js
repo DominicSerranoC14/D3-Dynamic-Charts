@@ -1,82 +1,169 @@
 'use strict';
 
-const h = 350;
 const w = 400;
-
-let dataList = [
-  {'month': 1, "sales": 105},
-  {'month': 2, "sales": 130},
-  {'month': 3, "sales": 230},
-  {'month': 4, "sales": 125},
-  {'month': 5, "sales": 150},
-  {'month': 6, "sales": 205},
-  {'month': 7, "sales": 220},
-  {'month': 8, "sales": 210},
-  {'month': 9, "sales": 115},
-  {'month': 10, "sales": 120},
-  {'month': 11, "sales": 295},
-  {'month': 12, "sales": 230},
-];
+const h = 200;
+const padding = 35;
+let ds;
+let metrics = [];
+/////////////////////////////////////////
 
 
-// Function that determines color of data dots
-const kpiIndicator = (d) => {
-  if (d >= 200) {
-    return 'red';
-  } else if (d < 200) {
-    return 'grey'
-  }
-}
+// Dynamically create dropdown menu
+const P = document.createElement('p');
+P.innerHTML = 'Choose Date Range ';
+const select = document.createElement('select');
+select.setAttribute('id', 'date-option');
+const OOne = document.createElement('option');
+OOne.setAttribute('value', '12');
+OOne.innerHTML = 'Last Year';
+const OTwo = document.createElement('option');
+OTwo.setAttribute('value', '6');
+OTwo.innerHTML = 'Last 6/mo';
+const OThree = document.createElement('option');
+OThree.setAttribute('value', '3');
+OThree.innerHTML = 'Last Quarter';
+document.body.append(P);
+P.append(select);
+select.append(OOne, OTwo, OThree);
 
 
-// Function that determines which labels should be shown
-// Receives in dataSet, what col should be labeled, current value,
-// and type of labels that should be shown
-const showMinMax = (ds, col, val, type) => {
-  let max = d3.max(ds, (d) => d[col]);
-  let min = d3.min(ds, (d) => d[col]);
 
-  if (type === 'minmax' && (val === min || val === max)) {
-    return val;
-  } else {
-    if (type === 'all') {
-      return val;
-    }
-  }
+const buildLine = (ds) => {
+
+  // Function for x-axis scaling
+  const xScale = d3.scale.linear()
+    .domain([
+      // Determine min and max values of x axis
+      d3.min(ds.monthlySales, (d) => d.month),
+      d3.max(ds.monthlySales, (d) => d.month)
+    ])
+    // Range is from 0 to svg width
+    .range([padding + 5, w - padding])
+
+  // Function for y-axis scaling
+  const yScale = d3.scale.linear()
+    .domain([0, d3.max(ds.monthlySales, (d) => d.sales)])
+    .range([h - padding, 10])
+
+  // Create y-axis and x-axis
+  const yAxisGen = d3.svg.axis().scale(yScale).orient('left').ticks(5);
+  const xAxisGen = d3.svg.axis().scale(xScale).orient('bottom');
+
+  // Function for drawing line graph
+  const drawLine = d3.svg.line()
+    .x((d) => xScale(d.month))
+    .y((d) => yScale(d.sales))
+    .interpolate('linear');
+
+  const svg = d3.select('body').append('svg')
+    .attr({
+      width: w,
+      height: h,
+      // Added id for more selective manipulation
+      'id': `svg-${ds.category}`
+    });
+
+  // Append y axis to svg
+  const yAxis = svg.append('g').call(yAxisGen)
+    .attr('class', 'y-axis')
+    .attr('transform', `translate(${padding}, 0)`);
+
+  // Append x axis to svg
+  const xAxis = svg.append('g').call(xAxisGen)
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0, ${h - padding})`);
+
+  const viz = svg.append('path')
+    .attr({
+      d: drawLine(ds.monthlySales),
+      'stroke': 'purple',
+      'stroke-width': 2,
+      'fill': 'none',
+      'class': `path-${ds.category}`
+    });
 };
 
 
-const svg = d3.select('body').append('svg')
-  .attr({
-    width: w,
-    height: h
-  });
+const updateLine = (ds) => {
+
+  // Function for x-axis scaling
+  const xScale = d3.scale.linear()
+    .domain([
+      // Determine min and max values of x axis
+      d3.min(ds.monthlySales, (d) => d.month),
+      d3.max(ds.monthlySales, (d) => d.month)
+    ])
+    // Range is from 0 to svg width
+    .range([padding + 5, w - padding])
+    .nice();
+
+  // Function for y-axis scaling
+  const yScale = d3.scale.linear()
+    .domain([0, d3.max(ds.monthlySales, (d) => d.sales)])
+    .range([h - padding, 10])
+    .nice();
+
+  // Create y-axis and x-axis
+  const yAxisGen = d3.svg.axis().scale(yScale).orient('left').ticks(5);
+  const xAxisGen = d3.svg.axis().scale(xScale).orient('bottom');
+
+  // Function for drawing line graph
+  const drawLine = d3.svg.line()
+    .x((d) => xScale(d.month))
+    .y((d) => yScale(d.sales))
+    .interpolate('linear');
+
+  // Select the current svg to update
+  const svg = d3.select('body').select(`#svg-${ds.category}`);
+
+  // Append y axis to svg
+  const yAxis = svg.selectAll('g.y-axis').call(yAxisGen);
+  // Append x axis to svg
+  const xAxis = svg.selectAll('g.x-axis').call(xAxisGen);
+
+  const viz = svg.selectAll(`.path-${ds.category}`)
+    .attr({
+      d: drawLine(ds.monthlySales)
+    });
+};
 
 
-// Add dots to scatter plot
-const dots = svg.selectAll('circle')
-  .data(dataList)
-  .enter()
-  .append('circle')
-  .attr({
-    cx: (d) => d.month * 25,
-    cy: (d) => h - d.sales,
-    r: 5,
-    'fill': (d) => kpiIndicator(d.sales)
-  });
+const showHeader = (ds) => {
+  d3.select('body').append('h1')
+    .text(`${ds.category} Sales 2016`)
+};
 
 
-// Create Labels
-const labels = svg.selectAll('text')
-  .data(dataList)
-  .enter()
-  .append('text')
-  .text((d) => showMinMax(dataList, 'sales', d.sales, 'all'))
-  .attr({
-    x: (d) => (d.month * 24),
-    y: (d) => (h - d.sales) - 8,
-    'font-size': '12px',
-    'font-family': 'sans-serif',
-    'fill': 'grey',
-    'text-anchor': 'start'
+d3.json('./js/dataList.json', (err, data) => {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Data received");
+    // Loop through each collection in the json file
+    data.collection.forEach((ds) => {
+      // Execute the header d3 line function
+      showHeader(ds);
+      buildLine(ds);
+    });
+  };
+});
+
+
+// Add event listeners for filter options
+d3.select('select')
+  .on('change', (d, i) => {
+    // On change, get the original data set
+    d3.json('./js/dataList.json', (err, data) => {
+      if (err) {
+        console.log("Error: ", err);
+      } else {
+        const sel = d3.select('#date-option').node().value;
+        // Loop through the ds to update the graphs
+        data.collection.forEach((ds) => {
+          // Splice the sales array by the filter amount selected
+          ds.monthlySales.splice(0, ds.monthlySales.length - sel);
+          updateLine(ds);
+        });
+      };
+    });
   });
