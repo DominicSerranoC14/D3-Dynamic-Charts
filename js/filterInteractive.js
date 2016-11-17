@@ -1,6 +1,6 @@
 'use strict';
 
-const w = 400;
+const w = 600;
 const h = 200;
 const padding = 35;
 let ds;
@@ -122,6 +122,10 @@ const updateLine = (ds) => {
   const xAxis = svg.selectAll('g.x-axis').call(xAxisGen);
 
   const viz = svg.selectAll(`.path-${ds.category}`)
+    // Function that smoothly transitions one path to another being drawn
+    .transition()
+    .duration(1000)
+    .ease('linear')
     .attr({
       d: drawLine(ds.monthlySales)
     });
