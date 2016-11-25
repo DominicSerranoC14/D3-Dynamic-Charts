@@ -87,6 +87,7 @@ const buildLine = (ds) => {
       'class': `path-${ds.category}`
     });
 
+  // Create datapoint dots for toolTip accuracy
   const dots = svg.selectAll('circle')
     .data(ds.monthlySales)
     .enter()
@@ -104,6 +105,7 @@ const buildLine = (ds) => {
         .duration(500)
         .style('opacity', .85)
 
+      // Create toolTip html and position
       toolTip.html(`<strong>Sales $${d.sales} K</strong>`)
         .style('left', `${d3.event.pageX}px`)
         .style('top', `${d3.event.pageY - 28}px`)
@@ -162,6 +164,16 @@ const updateLine = (ds) => {
     .attr({
       d: drawLine(ds.monthlySales)
     });
+
+  // Update graph with the current datapoint for adjusted array
+  const dots = svg.selectAll(`.circle-${ds.category}`)
+    .attr({
+      cx: (d) => xScale(d.month),
+      cy: (d) => yScale(d.sales),
+      r: 4,
+      'fill': 'grey',
+    })
+
 };
 
 
